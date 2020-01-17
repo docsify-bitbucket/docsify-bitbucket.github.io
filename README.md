@@ -63,24 +63,43 @@ window.$docsify = {
 }
 ```
 
-### Repository URI scheme
+### Disable repository links
 
-The plugin resolves special Bitbucket URIs to real Bitbucket Server URLs. Using this feature makes easy to link documents in other repositories either in same Bitbucket project or in another one. You can use Bitbucket URI in any markdown document including sidebar and navbar documents.
+The plugin resolves special repository URLs to real Bitbucket Server URLs. Using this feature makes easy to link documents in other repositories either in same Bitbucket project or in another one. The first path segment (the first `/`) may have path parameters defined in [RFC 3986 -  Uniform Resource Identifier / 3.3 Path](https://tools.ietf.org/html/rfc3986#section-3.3). The following path segment parameters are handled by plugin:
 
-Bitbucket URI format:
+parameter | value
+----------|------------
+p         | Bitbucket project key, project's short name or ~username for personal repositories
+r         | Bitbucket git repository name
+b         | Branch name
+
+
+Repository URI format:
 
 ```
-bitbucket:{//project}{/repository}{/path}
+/;p=project;r=repository;b=branch/path
 ```
 
-The project part (authority element of the URI) is optional but the repository part is required. The default value of the project part is the project of the enclosing markdown document.
+The project and branch part is optional but the repository part is required. The default value of the project is the project of the enclosing markdown document. The default value of the branch is the `main` branch.
 
-You can change the default `bitbucket` URI scheme:
+Example for referencing main branch of repository *sample* in same project as referring document:
+
+```
+/;r=sample
+```
+
+The *path* part may conain any path relative to referred branch:
+
+```
+/;r=sample/docs/tutorial/intro
+```
+
+You can disable this feature:
 
 ```javascript
 window.$docsify = {
   bitbucket: {
-    scheme : 'scm' // default is `bitbucket`
+    noLink : true
   }
 }
 ```
