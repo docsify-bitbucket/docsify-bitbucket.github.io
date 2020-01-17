@@ -126,8 +126,8 @@ $docsify.plugins = [].concat(function (hook, vm) {
             project = project || defs.project;
             repository = repository || defs.repository;
             //branch = branch || defs.branch;
-            branch = branch || '';
-            content = content.replace(found[0], "(" + defs.protocol + "//" + defs.host + "/pages/" + project + "/" + repository + "/" + branch)
+            branch = branch || 'master';
+            content = content.replace(found[0], "(" + defs.protocol + "//" + defs.host + "/pages/" + project + "/" + repository + "/" + branch + "/browse")
         }
         
         return content;
