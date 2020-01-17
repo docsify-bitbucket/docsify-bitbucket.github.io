@@ -10,14 +10,14 @@ A [Docsify](https://docsify.js.org) plugin that help using [Docsify](https://doc
 Add following script tag to your `index.html` after docsify.
 
 ```html
-<script src="https://unpkg.com/docsify-bitbucket"></script>
+<script src="//unpkg.com/docsify-bitbucket"></script>
 ```
 
 ## Options
 
 ### Disable repo
 
-If `repo` parameter is missing from Docsify configuration the plugin detect Butbucket Server repository URL and use it as Docsify repo parameter. You can disable this feature:
+If `repo` parameter is missing from Docsify configuration then the plugin detect Butbucket Server repository URL and use it as Docsify repo parameter. You can disable this feature:
 
 ```javascript
 window.$docsify = {
@@ -29,7 +29,7 @@ window.$docsify = {
 
 ### Disable corner icon
 
-If `repo` parameter is set (or detected) the plugin replaces the default GitHub repository corner picture with Bitbucket logo. You can disable this feature:
+If `repo` parameter is set (or detected) then the plugin replaces the default GitHub repository corner picture with Bitbucket logo. You can disable this feature:
 
 ```javascript
 window.$docsify = {
@@ -41,7 +41,7 @@ window.$docsify = {
 
 ### Disable logo
 
-If `logo` parameter is missing from Docsify configuration the plugin detect the Bitbucket project and use project's logo as Docsify logo parameter. You can disable this feature:
+If `logo` parameter is missing from Docsify configuration then the plugin detect the Bitbucket project and use project's logo as Docsify logo parameter. You can disable this feature:
 
 ```javascript
 window.$docsify = {
@@ -53,7 +53,7 @@ window.$docsify = {
 
 ### Disable favicon
 
-If `shortcut icon` HTML link element is missing from enclosing HTML document the plugin detect the Bitbucket project and use project's logo as shortcut icon (favicon). You can disable this feature:
+If `shortcut icon` HTML link element is missing from enclosing HTML document then the plugin detect the Bitbucket project and use project's logo as shortcut icon (favicon). You can disable this feature:
 
 ```javascript
 window.$docsify = {
@@ -63,12 +63,36 @@ window.$docsify = {
 }
 ```
 
-### Link prefix
+### Repository URI scheme
+
+The plugin resolves special Bitbucket URIs to real Bitbucket Server URLs. Using this feature makes easy to link documents in other repositories either in same Bitbucket project or in another one. You can use Bitbucket URI in any markdown document including sidebar and navbar documents.
+
+Bitbucket URI format:
+
+```
+bitbucket:{//project}{/repository}{/path}
+```
+
+The project part (authority element of the URI) is optional but the repository part is required. The default value of the project part is the project of the enclosing markdown document.
+
+You can change the default `bitbucket` URI scheme:
 
 ```javascript
 window.$docsify = {
   bitbucket: {
-    link : '//'
+    scheme : 'scm' // default is `bitbucket`
+  }
+}
+```
+
+### Disable title
+
+If `title` HTML element is missing from enclosing HTML document then the plugin set it based on the first markdown heading line of the current document. You can disable this feature:
+
+```javascript
+window.$docsify = {
+  bitbucket: {
+    noTitle : true
   }
 }
 ```
