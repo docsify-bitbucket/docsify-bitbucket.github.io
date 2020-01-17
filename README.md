@@ -2,6 +2,7 @@
 
 [![NPM](https://img.shields.io/npm/v/docsify-bitbucket.svg?style=flat-square)](https://www.npmjs.com/package/docsify-bitbucket)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://github.com/szkiba/docsify-bitbucket/blob/master/LICENSE)
+[![Issues](https://img.shields.io/github/issues/szkiba/docsify-bitbucket.svg?style=flat-square)](https://github.com/szkiba/docsify-bitbucket/issues)
 
 A [Docsify](https://docsify.js.org) plugin that help using [Docsify](https://docsify.js.org) with [Pages for Bitbucket Server](https://mohamicorp.atlassian.net/wiki/spaces/DOC/pages/771817567/Pages+for+Bitbucket+Server).
 

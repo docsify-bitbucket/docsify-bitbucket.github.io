@@ -137,7 +137,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
     function avatarPrefix() {
         var props = window.DocsifyBitbucket;
         var prefix = props.protocol + "//" + props.host;
-        if (props.project.startsWith('~')) {
+        if (props.project && props.project.startsWith('~')) {
             prefix += "/users/" + props.project.substr(1);
         } else {
             prefix += "/projects/" + props.project;
