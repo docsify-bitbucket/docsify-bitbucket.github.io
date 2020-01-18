@@ -126,8 +126,8 @@ $docsify.plugins = [].concat(function (hook, vm) {
             project = project || defs.project;
             repository = repository || defs.repository;
             //branch = branch || defs.branch;
-            branch = branch || '';
-            content = content.replace(found[0], "(" + defs.protocol + "//" + defs.host + "/pages/" + project + "/" + repository + "/" + branch)
+            branch = branch || 'master';
+            content = content.replace(found[0], "(" + defs.protocol + "//" + defs.host + "/pages/" + project + "/" + repository + "/" + branch + "/browse")
         }
         
         return content;
@@ -137,7 +137,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
     function avatarPrefix() {
         var props = window.DocsifyBitbucket;
         var prefix = props.protocol + "//" + props.host;
-        if (props.project.startsWith('~')) {
+        if (props.project && props.project.startsWith('~')) {
             prefix += "/users/" + props.project.substr(1);
         } else {
             prefix += "/projects/" + props.project;
