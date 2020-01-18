@@ -4,7 +4,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://github.com/szkiba/docsify-bitbucket/blob/master/LICENSE)
 [![Issues](https://img.shields.io/github/issues/szkiba/docsify-bitbucket.svg?style=flat-square)](https://github.com/szkiba/docsify-bitbucket/issues)
 
-A [Docsify](https://docsify.js.org) plugin that help using [Docsify](https://docsify.js.org) with [Pages for Bitbucket Server](https://mohamicorp.atlassian.net/wiki/spaces/DOC/pages/771817567/Pages+for+Bitbucket+Server).
+A [Docsify](https://docsify.js.org) plugin that help using [Docsify](https://docsify.js.org) with [Pages for Bitbucket Server](https://mohamicorp.atlassian.net/wiki/spaces/DOC/pages/771817567/Pages+for+Bitbucket+Server) and [Bitbucket Cloud](https://bitbucket.org).
+
+Docsify version of this documentation can be found at https://docsify-bitbucket.bitbucket.io
 
 ## Installation
 
@@ -16,9 +18,9 @@ Add following script tag to your `index.html` after docsify.
 
 ## Options
 
-### Disable repo
+### repo
 
-If `repo` parameter is missing from Docsify configuration then the plugin detect Butbucket Server repository URL and use it as Docsify repo parameter. You can disable this feature:
+If `repo` parameter is missing from Docsify configuration then the plugin detect Butbucket repository URL and use it as Docsify repo parameter. You can disable this feature:
 
 ```javascript
 window.$docsify = {
@@ -28,7 +30,9 @@ window.$docsify = {
 }
 ```
 
-### Disable corner icon
+*On Bitbucket Cloud the repository detection is limited to web pages served from `bitbucket.io` domain.*
+
+### corner icon
 
 If `repo` parameter is set (or detected) then the plugin replaces the default GitHub repository corner picture with Bitbucket logo. You can disable this feature:
 
@@ -40,7 +44,7 @@ window.$docsify = {
 }
 ```
 
-### Disable logo
+### logo
 
 If `logo` parameter is missing from Docsify configuration then the plugin detect the Bitbucket project and use project's logo as Docsify logo parameter. You can disable this feature:
 
@@ -52,7 +56,9 @@ window.$docsify = {
 }
 ```
 
-### Disable favicon
+*On Bitbucket Cloud the plugin use repository's avatar as default logo.*
+
+### favicon
 
 If `shortcut icon` HTML link element is missing from enclosing HTML document then the plugin detect the Bitbucket project and use project's logo as shortcut icon (favicon). You can disable this feature:
 
@@ -64,7 +70,9 @@ window.$docsify = {
 }
 ```
 
-### Disable repository links
+*On Bitbucket Cloud the plugin use repository's avatar as default favicon.*
+
+### repository links
 
 The plugin resolves special repository URLs to real Bitbucket Server URLs. Using this feature makes easy to link documents in other repositories either in same Bitbucket project or in another one. The first path segment (the first `/`) may have path parameters defined in [RFC 3986 -  Uniform Resource Identifier / 3.3 Path](https://tools.ietf.org/html/rfc3986#section-3.3). The following path segment parameters are handled by plugin:
 
@@ -105,7 +113,9 @@ window.$docsify = {
 }
 ```
 
-### Disable title
+*Repository URI resolution feture works only with [Pages for Bitbucket Server](https://mohamicorp.atlassian.net/wiki/spaces/DOC/pages/771817567/Pages+for+Bitbucket+Server).*
+
+### title
 
 If `title` HTML element is missing from enclosing HTML document then the plugin set it based on the first markdown heading line of the current document. You can disable this feature:
 
@@ -116,6 +126,10 @@ window.$docsify = {
   }
 }
 ```
+
+## Sample
+
+Sample website can be found at https://docsify-bitbucket.bitbucket.io/sample
 
 ## License
 
