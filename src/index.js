@@ -23,13 +23,30 @@ $docsify.plugins = [].concat(function (hook, vm) {
 
         // detect repo from document location
         var found = location.pathname.match(/^\/pages\/([^/]+)\/([^/]+)\/([^/]+(\/[^/]+)*)\/browse.*$/);
-        var project = found && found[1]
-        var repository = found && found[2]
-        var branch = found && found[3]
+        var project, repository, branch, protocol, host;
 
-        var protocol = location.protocol;
-        var host = location.host;
-
+        if (found) {
+            project = found[1]
+            repository = found[2]
+            branch = found[3]
+            protocol = location.protocol;
+            host = location.host;
+        } else if (location.hostname == "localhost") {
+            // deprecated, but it is just a localhost workaround
+            var request = new XMLHttpRequest();
+            request.open('GET', '/.git/config', false);
+            request.send(null);
+            if (request.status === 200) {
+                var found = request.responseText.match(/\[remote "origin"\]\n\s+url\s*=\s*(([^/]+)\/\/(.*@)?([^:^/].*)(:[^/]+).*\/([^/]+)\/([^/]+)\.git)$/m);
+                if (found) {
+                    project = found && found[6];
+                    repository = found && found[7];
+                    branch = 'master';
+                    protocol = "https:";
+                    host = found[4];
+                }
+            }
+        }
 
         if (!window.$docsify.repo && branch && !window.$docsify.bitbucket.noRepo) {
             window.$docsify.repo = protocol + "//" + host + "/projects/" + project + "/repos/" + repository;
@@ -86,7 +103,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
             workspace = found && found[1];
             repository = found && found[2];
         } else {
-            workspace = location.hostname.substr(0,location.hostname.length - 13);
+            workspace = location.hostname.substr(0, location.hostname.length - 13);
             repository = location.hostname;
             if (!window.$docsify.bitbucket.noRepo) {
                 window.$docsify.repo = "https://bitbucket.org/" + workspace + "/" + repository;
@@ -141,7 +158,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
                         }
                         favicon.setAttribute("href", href);
                     }
-            
+
                 });
         }
     }
@@ -177,7 +194,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
 
         var found;
 
-        while (found = content.match(/\(\/;([a-z]=[a-zA-Z~\-_]+);([a-z]=[a-zA-Z~\-_]+)?;?([a-z]=[a-zA-Z~\-_]+)?/)) {
+        while (found = content.match(/\(\/;([a-z]=[a-zA-Z~\-_]+);?([a-z]=[a-zA-Z~\-_]+)?;?([a-z]=[a-zA-Z~\-_]+)?/)) {
             let project, repository, branch;
             for (var i = 1; i < found.length; i++) {
                 if (!found[i]) {
