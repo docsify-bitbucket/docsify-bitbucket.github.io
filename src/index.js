@@ -79,13 +79,13 @@ $docsify.plugins = [].concat(function (hook, vm) {
 
         // set project avatar as default favicon
         if (window.$docsify.repo && !window.$docsify.bitbucket.noFavicon) {
-            var favicon = document.querySelector("link[rel='shortcut icon']");
+            var favicon = document.querySelector("link[rel='shortcut icon']") || document.querySelector("link[rel='icon']");
             if (!favicon) {
                 favicon = document.createElement("link");
                 favicon.setAttribute("rel", "shortcut icon");
                 document.querySelector("head").appendChild(favicon);
+                favicon.setAttribute("href", avatarPrefix() + '64');
             }
-            favicon.setAttribute("href", avatarPrefix() + '64');
         }
 
         // resolve links in config (alias, logo)
