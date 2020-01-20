@@ -23,13 +23,30 @@ $docsify.plugins = [].concat(function (hook, vm) {
 
         // detect repo from document location
         var found = location.pathname.match(/^\/pages\/([^/]+)\/([^/]+)\/([^/]+(\/[^/]+)*)\/browse.*$/);
-        var project = found && found[1]
-        var repository = found && found[2]
-        var branch = found && found[3]
+        var project, repository, branch, protocol, host;
 
-        var protocol = location.protocol;
-        var host = location.host;
-
+        if (found) {
+            project = found[1];
+            repository = found[2];
+            branch = found[3];
+            protocol = location.protocol;
+            host = location.host;
+        } else if (location.hostname == "localhost") {
+            // deprecated, but it is just a localhost workaround
+            var request = new XMLHttpRequest();
+            request.open('GET', '/.git/config', false);
+            request.send(null);
+            if (request.status === 200) {
+                var found = request.responseText.match(/\[remote "origin"\]\n\s+url\s*=\s*(([^/]+)\/\/(.*@)?([^:^/].*)(:[^/]+).*\/([^/]+)\/([^/]+)\.git)$/m);
+                if (found) {
+                    project = found[6];
+                    repository = found[7];
+                    branch = 'master';
+                    protocol = "https:";
+                    host = found[4];
+                }
+            }
+        }
 
         if (!window.$docsify.repo && branch && !window.$docsify.bitbucket.noRepo) {
             window.$docsify.repo = protocol + "//" + host + "/projects/" + project + "/repos/" + repository;
@@ -62,17 +79,31 @@ $docsify.plugins = [].concat(function (hook, vm) {
 
         // set project avatar as default favicon
         if (window.$docsify.repo && !window.$docsify.bitbucket.noFavicon) {
-            var favicon = document.querySelector("link[rel='shortcut icon']");
+            var favicon = document.querySelector("link[rel='shortcut icon']") || document.querySelector("link[rel='icon']");
             if (!favicon) {
                 favicon = document.createElement("link");
                 favicon.setAttribute("rel", "shortcut icon");
                 document.querySelector("head").appendChild(favicon);
+                favicon.setAttribute("href", avatarPrefix() + '64');
             }
-            favicon.setAttribute("href", avatarPrefix() + '64');
+        }
+
+        // resolve links in config (alias, logo)
+        if (!window.$docsify.bitbucket.noLink) {
+            var all = window.$docsify.alias;
+            if (all) {
+                for (var from in all) {
+                    all[from] = resolve(all[from]);
+                }
+            }
+            if (window.$docsify.logo) {
+                window.$docsify.logo = resolve(window.$docsify.logo);
+            }
         }
     });
 
     function cloudInit() {
+        window.$docsify.bitbucket.noLink = true;
 
         var workspace;
         var repository;
@@ -86,7 +117,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
             workspace = found && found[1];
             repository = found && found[2];
         } else {
-            workspace = location.hostname.substr(0,location.hostname.length - 13);
+            workspace = location.hostname.substr(0, location.hostname.length - 13);
             repository = location.hostname;
             if (!window.$docsify.bitbucket.noRepo) {
                 window.$docsify.repo = "https://bitbucket.org/" + workspace + "/" + repository;
@@ -113,6 +144,8 @@ $docsify.plugins = [].concat(function (hook, vm) {
             }
         }
 
+        rewriteLinks();
+
         if (window.DocsifyBitbucket.workspace) {
             cloudMounted();
             return;
@@ -129,7 +162,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
                 .then((json) => {
                     var href = json.links.avatar.href;
                     var logo = document.querySelector("h1.app-name img");
-                    logo.src = href
+                    logo.src = href;
                     window.$docsify.logo = href;
 
                     if (!window.$docsify.bitbucket.noFavicon) {
@@ -141,7 +174,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
                         }
                         favicon.setAttribute("href", href);
                     }
-            
+
                 });
         }
     }
@@ -165,43 +198,60 @@ $docsify.plugins = [].concat(function (hook, vm) {
                 this.style.display = 'block';
             }
         }
+
+        rewriteLinks();
     });
 
-    hook.beforeEach(function (content) {
+    hook.doneEach(rewriteLinks);
 
+    function rewriteLinks() {
         if (window.$docsify.bitbucket.noLink) {
-            return content;
+            return;
         }
 
+        // handle repository links for elements with 'href' (ie: a)
+        document.querySelectorAll('[href^="#/;"]').forEach(function (item) {
+            item.href = resolve(item.hash);
+        });
+
+        // handle repository links for elements with 'src' (ie: img)
+        document.querySelectorAll('[data-origin^="/;"]').forEach(function (item) {
+            item.src = resolve(item.getAttribute('data-origin'));
+        });
+    }
+
+    function resolve(link) {
+        let project, repository, branch, prefix;
         var defs = window.DocsifyBitbucket;
 
-        var found;
+        var found = link.match(/#?\/;([a-z]=[a-zA-Z~\-_]+);?([a-z]=[a-zA-Z~\-_]+)?;?([a-z]=[a-zA-Z~\-_]+)?/);
 
-        while (found = content.match(/\(\/;([a-z]=[a-zA-Z~\-_]+);([a-z]=[a-zA-Z~\-_]+)?;?([a-z]=[a-zA-Z~\-_]+)?/)) {
-            let project, repository, branch;
-            for (var i = 1; i < found.length; i++) {
-                if (!found[i]) {
-                    continue;
-                }
-                if (found[i].startsWith('p=')) {
-                    project = found[i].substr(2);
-                }
-                if (found[i].startsWith('r=')) {
-                    repository = found[i].substr(2);
-                }
-                if (found[i].startsWith('b=')) {
-                    branch = found[i].substr(2);
-                }
-            }
-            project = project || defs.project;
-            repository = repository || defs.repository;
-            //branch = branch || defs.branch;
-            branch = branch || 'master';
-            content = content.replace(found[0], "(" + defs.protocol + "//" + defs.host + "/pages/" + project + "/" + repository + "/" + branch + "/browse")
+        if (!found) {
+            return link;
         }
 
-        return content;
-    });
+        for (var i = 1; i < found.length; i++) {
+            if (!found[i]) {
+                continue;
+            }
+            if (found[i].startsWith('p=')) {
+                project = found[i].substr(2);
+            }
+            if (found[i].startsWith('r=')) {
+                repository = found[i].substr(2);
+            }
+            if (found[i].startsWith('b=')) {
+                branch = found[i].substr(2);
+            }
+        }
+        project = project || defs.project;
+        repository = repository || defs.repository;
+        branch = branch || 'master';
+
+        prefix = defs.protocol + "//" + defs.host + "/pages/" + project + "/" + repository + "/" + branch + "/browse";
+
+        return prefix + link.substr(found[0].length);
+    }
 
     // returns the project avatar picture prefix (with size parameter but without value)
     function avatarPrefix() {
