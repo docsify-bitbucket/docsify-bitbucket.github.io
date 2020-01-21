@@ -69,7 +69,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
 
         // store properties for other hooks
         window.DocsifyBitbucket = {
-            protocol: protocol, host: host, project: project, repository: repository, branch: branch
+            protocol: protocol, host: host, project: project, repository: repository, branch: branch, resolve: resolve
         };
 
         // set project avatar as default logo
@@ -100,6 +100,8 @@ $docsify.plugins = [].concat(function (hook, vm) {
                 window.$docsify.logo = resolve(window.$docsify.logo);
             }
         }
+
+        rewriteLinks();
     });
 
     function cloudInit() {
@@ -200,6 +202,16 @@ $docsify.plugins = [].concat(function (hook, vm) {
         }
 
         rewriteLinks();
+    });
+
+    hook.beforeEach(function (content) {
+        rewriteLinks();
+        return content;
+    });
+
+    hook.afterEach(function (html, next) {
+        rewriteLinks();
+        next(html);
     });
 
     hook.doneEach(rewriteLinks);
