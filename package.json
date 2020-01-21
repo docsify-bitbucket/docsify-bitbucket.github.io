@@ -1,6 +1,6 @@
 {
   "name": "docsify-bitbucket",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A Docsify plugin that help using Docsify with Bitbucket Server and Bitbucket Cloud",
   "main": "dist/docsify-bitbucket.min.js",
   "files": [
