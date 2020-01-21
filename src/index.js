@@ -69,7 +69,7 @@ $docsify.plugins = [].concat(function (hook, vm) {
 
         // store properties for other hooks
         window.DocsifyBitbucket = {
-            protocol: protocol, host: host, project: project, repository: repository, branch: branch
+            protocol: protocol, host: host, project: project, repository: repository, branch: branch, resolve: resolve
         };
 
         // set project avatar as default logo
