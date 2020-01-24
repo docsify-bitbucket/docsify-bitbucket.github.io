@@ -13,7 +13,7 @@ Docsify version of this documentation can be found at https://docsify-bitbucket.
 Add following script tag to your `index.html` after docsify.
 
 ```html
-<script src="//unpkg.com/docsify-bitbucket"></script>
+<script src="//cdn.jsdelivr.net/npm/docsify-bitbucket"></script>
 ```
 
 ## Options
