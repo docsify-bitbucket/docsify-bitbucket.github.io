@@ -1,6 +1,6 @@
 {
   "name": "docsify-bitbucket",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A Docsify plugin that help using Docsify with Bitbucket Server and Bitbucket Cloud",
   "main": "dist/docsify-bitbucket.min.js",
   "files": [
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/szkiba/docsify-bitbucket.git"
+    "url": "git+https://github.com/docsify-bitbucket/docsify-bitbucket.github.io.git"
   },
   "keywords": [
     "docsify",
@@ -21,9 +21,9 @@
   "author": "Ivan Szkiba",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/szkiba/docsify-bitbucket/issues"
+    "url": "https://github.com/docsify-bitbucket/docsify-bitbucket.github.io/issues"
   },
-  "homepage": "https://docsify-bitbucket.bitbucket.io",
+  "homepage": "https://docsify-bitbucket.github.io",
   "devDependencies": {
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
