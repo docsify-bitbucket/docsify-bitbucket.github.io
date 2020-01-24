@@ -6,7 +6,7 @@
 
 A [Docsify](https://docsify.js.org) plugin that help using [Docsify](https://docsify.js.org) with [Pages for Bitbucket Server](https://mohamicorp.atlassian.net/wiki/spaces/DOC/pages/771817567/Pages+for+Bitbucket+Server) and [Bitbucket Cloud](https://bitbucket.org).
 
-Docsify version of this documentation can be found at https://docsify-bitbucket.bitbucket.io
+Docsify version of this documentation can be found at https://docsify-bitbucket.github.io
 
 ## Installation
 
