@@ -6,10 +6,6 @@ $docsify.plugins = [].concat(function (hook, vm) {
             window.$docsify.bitbucket = {};
         }
 
-        // make page relative references works on index page
-        if (location.href.endsWith("index.html")) {
-            location.href = location.href.replace(/[^\/]*$/, "");
-        }
         // docsify (or themeble) workaround, logo missing is no name parameter set
         if (!window.$docsify.name) {
             window.$docsify.name = ' ';
@@ -199,10 +195,10 @@ $docsify.plugins = [].concat(function (hook, vm) {
 
         rewrite();
         if (!window.$docsify.bitbucket.noLink) {
-            new MutationObserver(function(list, observer) {
+            new MutationObserver(function (list, observer) {
                 rewrite();
                 observer.takeRecords();
-            }).observe(document, {attributes:true, childList: true, subtree: true});
+            }).observe(document, { attributes: true, childList: true, subtree: true });
         }
     });
 
@@ -268,3 +264,8 @@ $docsify.plugins = [].concat(function (hook, vm) {
     }
 
 }, $docsify.plugins);
+
+// make page relative references works on index page
+if (location.href.endsWith("index.html")) {
+    location.href = location.href.replace(/[^\/]*$/, "");
+}
